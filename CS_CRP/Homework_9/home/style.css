@@ -1,0 +1,377 @@
+/* -------------------------------------------------------------------------
+   RETRO ARCADE / NEON SYNTHWAVE THEME
+   ------------------------------------------------------------------------- */
+:root {
+  --bg-deep: #07070d;
+  --bg-card: rgba(14, 15, 26, 0.85);
+  --neon-cyan: #00f6ff;
+  --neon-magenta: #ff007f;
+  --neon-amber: #ffb700;
+  --neon-lime: #39ff14;
+  --text-primary: #f0f4fc;
+  --text-muted: #8b9bb4;
+  --font-retro: 'Press Start 2P', monospace;
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'Space Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* CRT Scanline Overlay */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.28) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.7;
+}
+
+/* Animated Neon Grid Background */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse at 50% 0%, rgba(255, 0, 127, 0.15) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 246, 255, 0.12) 0%, transparent 70%),
+    linear-gradient(rgba(0, 246, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 246, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* Main Hub Layout */
+.hub-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 48px 24px 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header */
+.hub-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-retro);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--neon-cyan);
+  padding: 6px 14px;
+  border: 1px solid rgba(0, 246, 255, 0.5);
+  border-radius: 20px;
+  background: rgba(0, 246, 255, 0.08);
+  box-shadow: 0 0 12px rgba(0, 246, 255, 0.25);
+  margin-bottom: 20px;
+  animation: pulse-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(0, 246, 255, 0.2);
+    border-color: rgba(0, 246, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(0, 246, 255, 0.6);
+    border-color: rgba(0, 246, 255, 0.9);
+  }
+}
+
+.glitch-title {
+  font-family: var(--font-heading);
+  font-size: clamp(34px, 6vw, 68px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 
+    0 0 10px rgba(0, 246, 255, 0.8),
+    0 0 25px rgba(0, 246, 255, 0.5),
+    0 0 45px rgba(255, 0, 127, 0.4);
+  margin-bottom: 14px;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: clamp(13px, 2vw, 16px);
+  color: var(--text-muted);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+/* Nav Grid - 3 Big Buttons */
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 28px;
+  margin-bottom: 48px;
+}
+
+/* Base Arcade Card (Button) */
+.arcade-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 32px 28px 26px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              border-color 0.28s ease, 
+              box-shadow 0.28s ease;
+  cursor: pointer;
+  min-height: 270px;
+}
+
+/* Subtle Card Glow pseudo */
+.arcade-card .card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  transition: height 0.3s ease, opacity 0.3s ease;
+  opacity: 0.8;
+}
+
+/* Header inside card */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-tag {
+  font-family: var(--font-retro);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+}
+
+.card-status {
+  font-family: var(--font-retro);
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(57, 255, 20, 0.15);
+  color: var(--neon-lime);
+  border: 1px solid rgba(57, 255, 20, 0.4);
+}
+
+/* Body inside card */
+.card-body {
+  flex-grow: 1;
+}
+
+.card-icon {
+  font-size: 26px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin-bottom: 10px;
+  transition: color 0.25s ease;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Footer / Action arrow */
+.card-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.action-text {
+  font-family: var(--font-retro);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+/* -------------------------------------------------------------------------
+   COLOR THEMES & HOVER ANIMATIONS
+   ------------------------------------------------------------------------- */
+
+/* 1. Neon Cyan (Game) */
+.card-cyan {
+  border-color: rgba(0, 246, 255, 0.35);
+}
+.card-cyan .card-glow {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 14px var(--neon-cyan);
+}
+.card-cyan .card-tag,
+.card-cyan .card-icon,
+.card-cyan .action-text {
+  color: var(--neon-cyan);
+}
+.card-cyan:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--neon-cyan);
+  box-shadow: 
+    0 14px 34px -8px rgba(0, 246, 255, 0.4),
+    0 0 20px rgba(0, 246, 255, 0.25),
+    inset 0 0 24px rgba(0, 246, 255, 0.08);
+}
+.card-cyan:hover .card-title {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 246, 255, 0.7);
+}
+.card-cyan:hover .action-text {
+  transform: translateX(6px);
+}
+
+/* 2. Neon Magenta (Portfolio) */
+.card-magenta {
+  border-color: rgba(255, 0, 127, 0.35);
+}
+.card-magenta .card-glow {
+  background: var(--neon-magenta);
+  box-shadow: 0 0 14px var(--neon-magenta);
+}
+.card-magenta .card-tag,
+.card-magenta .card-icon,
+.card-magenta .action-text {
+  color: var(--neon-magenta);
+}
+.card-magenta:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--neon-magenta);
+  box-shadow: 
+    0 14px 34px -8px rgba(255, 0, 127, 0.4),
+    0 0 20px rgba(255, 0, 127, 0.25),
+    inset 0 0 24px rgba(255, 0, 127, 0.08);
+}
+.card-magenta:hover .card-title {
+  color: var(--neon-magenta);
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.7);
+}
+.card-magenta:hover .action-text {
+  transform: translateX(6px);
+}
+
+/* 3. Neon Amber (API) */
+.card-amber {
+  border-color: rgba(255, 183, 0, 0.35);
+}
+.card-amber .card-glow {
+  background: var(--neon-amber);
+  box-shadow: 0 0 14px var(--neon-amber);
+}
+.card-amber .card-tag,
+.card-amber .card-icon,
+.card-amber .action-text {
+  color: var(--neon-amber);
+}
+.card-amber:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--neon-amber);
+  box-shadow: 
+    0 14px 34px -8px rgba(255, 183, 0, 0.4),
+    0 0 20px rgba(255, 183, 0, 0.25),
+    inset 0 0 24px rgba(255, 183, 0, 0.08);
+}
+.card-amber:hover .card-title {
+  color: var(--neon-amber);
+  text-shadow: 0 0 10px rgba(255, 183, 0, 0.7);
+}
+.card-amber:hover .action-text {
+  transform: translateX(6px);
+}
+
+/* Active Press State */
+.arcade-card:active {
+  transform: translateY(-3px) scale(1.01);
+}
+
+/* Footer */
+.hub-footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+  padding-top: 20px;
+}
+
+/* -------------------------------------------------------------------------
+   RESPONSIVE DESIGN (PHONES & TABLETS)
+   ------------------------------------------------------------------------- */
+@media (max-width: 680px) {
+  .hub-container {
+    padding: 36px 16px 40px;
+  }
+
+  .hub-header {
+    margin-bottom: 32px;
+  }
+
+  .badge {
+    font-size: 8.5px;
+    padding: 5px 12px;
+  }
+
+  .nav-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .arcade-card {
+    min-height: auto;
+    padding: 24px 20px;
+  }
+
+  .card-title {
+    font-size: 19px;
+  }
+
+  .card-desc {
+    font-size: 12.5px;
+  }
+}

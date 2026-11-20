@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcade Hub // Heuser CRP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/home/style.css">
+</head>
+<body>
+  <div class="crt-overlay" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <main class="hub-container">
+    <header class="hub-header">
+      <div class="badge">SYSTEM READY // INSERT COIN</div>
+      <h1 class="glitch-title" data-text="HEUSER ARCADE">HEUSER ARCADE</h1>
+      <p class="subtitle">Select a destination cartridge to initiate link sequence</p>
+    </header>
+
+    <nav class="nav-grid">
+      <!-- Game Link -->
+      <a href="/game" class="arcade-card card-cyan">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <span class="card-tag">CARTRIDGE 01</span>
+          <span class="card-status live">READY</span>
+        </div>
+        <div class="card-body">
+          <div class="card-icon">&#9654;&#9654;</div>
+          <h2 class="card-title">SKY TEMPLE</h2>
+          <p class="card-desc">Action browser arcade game built in pure HTML5 Canvas &amp; JavaScript.</p>
+        </div>
+        <div class="card-footer">
+          <span class="action-text">LAUNCH GAME &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Portfolio Link -->
+      <a href="/portfolio" class="arcade-card card-magenta">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <span class="card-tag">CARTRIDGE 02</span>
+          <span class="card-status live">READY</span>
+        </div>
+        <div class="card-body">
+          <div class="card-icon">&#9670;&#9670;</div>
+          <h2 class="card-title">DARKROOM IN ORBIT</h2>
+          <p class="card-desc">Interactive film-strip portfolio, mission log, and aeronautical journey.</p>
+        </div>
+        <div class="card-footer">
+          <span class="action-text">EXPLORE PORTFOLIO &rarr;</span>
+        </div>
+      </a>
+
+      <!-- API Link -->
+      <a href="/api" class="arcade-card card-amber">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <span class="card-tag">CARTRIDGE 03</span>
+          <span class="card-status live">READY</span>
+        </div>
+        <div class="card-body">
+          <div class="card-icon">&#123;&nbsp;&#125;</div>
+          <h2 class="card-title">SYSTEM API</h2>
+          <p class="card-desc">Backend application programming interface &amp; telemetry endpoints.</p>
+        </div>
+        <div class="card-footer">
+          <span class="action-text">CONNECT API &rarr;</span>
+        </div>
+      </a>
+    </nav>
+
+    <footer class="hub-footer">
+      <p>&copy; 2026 Heuser College CS CRP &bull; Yousuf Tahir &bull; Flask on Render</p>
+    </footer>
+  </main>
+</body>
+</html>

@@ -142,9 +142,45 @@ body.shake #track{animation:shake .35s}
   #photo{animation-duration:1s}
 }
 
+.back-home-link{
+  position:fixed;
+  top:18px;
+  left:20px;
+  z-index:1000;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 14px;
+  background:rgba(13,11,10,0.85);
+  color:var(--cream);
+  text-decoration:none;
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  border:1px solid rgba(241,230,208,0.3);
+  border-radius:3px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.6);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  transition:all 0.2s ease;
+  cursor:pointer;
+}
+.back-home-link:hover{
+  background:var(--safelight);
+  color:#fff;
+  border-color:var(--safelight);
+  box-shadow:0 0 14px rgba(224,48,30,0.6);
+  transform:translateY(-2px);
+}
+@media (max-width:600px){
+  .back-home-link{top:12px;left:14px;font-size:10px;padding:5px 10px}
+}
+
 </style>
 </head>
 <body>
+<a href="/" class="back-home-link" aria-label="Back to home">&larr; Back to home</a>
 <canvas id="stars" aria-hidden="true"></canvas>
 <div id="grain" aria-hidden="true"></div>
 <div id="safelight" aria-hidden="true"></div>

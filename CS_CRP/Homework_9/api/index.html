@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Arcade Machine // Open Trivia DB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/api/style.css">
+</head>
+<body>
+  <!-- Floating Back Link -->
+  <a href="/" class="back-link">&larr; Back to Home</a>
+
+  <!-- Audio Toggle -->
+  <button id="soundToggle" class="sound-toggle" type="button" aria-label="Toggle Sound">
+    <span id="soundIcon">&#128266;</span> SOUND: ON
+  </button>
+
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <div class="page-wrapper">
+    <!-- ARCADE CABINET (Pure CSS) -->
+    <div class="arcade-cabinet">
+      <!-- Side Wings / Bevels -->
+      <div class="cabinet-wing left" aria-hidden="true"></div>
+      <div class="cabinet-wing right" aria-hidden="true"></div>
+
+      <!-- Marquee Header -->
+      <header class="cabinet-marquee">
+        <div class="marquee-border">
+          <div class="marquee-content">
+            <span class="marquee-star">&#9733;</span>
+            <h1 class="marquee-title">TRIVIA ARCADE</h1>
+            <span class="marquee-star">&#9733;</span>
+          </div>
+          <div class="marquee-sub">LIVE OPEN TRIVIA DATABASE // 198X</div>
+        </div>
+      </header>
+
+      <!-- Upper Screen Hood & Speakers -->
+      <div class="speaker-grille" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <!-- Screen Frame / CRT Bezel -->
+      <div class="screen-bezel">
+        <div class="screen-frame">
+          <div class="screen-glass" id="screenGlass">
+            <!-- CRT Scanlines and curvature overlays -->
+            <div class="crt-scanlines" aria-hidden="true"></div>
+            <div class="crt-flicker" aria-hidden="true"></div>
+
+            <!-- Floating score popup container -->
+            <div id="scorePopup" class="score-popup" aria-hidden="true"></div>
+
+            <!-- ================= SCREEN STATE: START ================= -->
+            <div id="screenStart" class="screen-state active">
+              <div class="blink-coin">★ INSERT COIN ★</div>
+              <h2 class="arcade-subtitle">CHOOSE YOUR CHALLENGE</h2>
+
+              <div class="setup-form">
+                <div class="form-row">
+                  <label for="categorySelect">CATEGORY</label>
+                  <select id="categorySelect" class="arcade-select">
+                    <option value="">Any Category (Random)</option>
+                    <!-- Populated dynamically from /api/categories -->
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <label>DIFFICULTY</label>
+                  <div class="difficulty-toggle">
+                    <button type="button" class="diff-btn" data-diff="easy">EASY</button>
+                    <button type="button" class="diff-btn active" data-diff="medium">MEDIUM</button>
+                    <button type="button" class="diff-btn" data-diff="hard">HARD</button>
+                  </div>
+                </div>
+
+                <div class="high-score-display">
+                  <span>HIGH SCORE:</span>
+                  <span id="startHighScore" class="neon-number">000000</span>
+                </div>
+
+                <button id="startBtn" class="arcade-launch-btn" type="button">
+                  <span class="btn-shine"></span>
+                  START GAME
+                </button>
+              </div>
+            </div>
+
+            <!-- ================= SCREEN STATE: LOADING ================= -->
+            <div id="screenLoading" class="screen-state">
+              <div class="loading-box">
+                <div class="spinner-pixel"></div>
+                <div class="loading-text">LOADING... PLEASE WAIT</div>
+                <div class="loading-sub">FETCHING FROM OPEN TRIVIA DB</div>
+              </div>
+            </div>
+
+            <!-- ================= SCREEN STATE: ERROR ================= -->
+            <div id="screenError" class="screen-state">
+              <div class="error-box">
+                <div class="error-badge">SYSTEM ERROR</div>
+                <p id="errorMessage" class="error-text">The arcade machine is out of order. Check your internet and try again</p>
+                <button id="retryBtn" class="arcade-retry-btn" type="button">RETRY &rarr;</button>
+              </div>
+            </div>
+
+            <!-- ================= SCREEN STATE: GAMEPLAY ================= -->
+            <div id="screenGame" class="screen-state">
+              <!-- HUD (Heads-Up Display) -->
+              <div class="game-hud">
+                <div class="hud-item hud-round">
+                  <span class="hud-label">STAGE</span>
+                  <span id="hudQuestionNum" class="hud-value">01/10</span>
+                </div>
+                <div class="hud-item hud-score">
+                  <span class="hud-label">SCORE</span>
+                  <span id="hudScore" class="hud-value neon-number">000000</span>
+                </div>
+                <div class="hud-item hud-streak">
+                  <span class="hud-label">STREAK</span>
+                  <span id="hudStreak" class="hud-value">0</span>
+                </div>
+                <div class="hud-item hud-lives">
+                  <span class="hud-label">LIVES</span>
+                  <span id="hudLives" class="hud-hearts">&#10084;&#65039; &#10084;&#65039; &#10084;&#65039;</span>
+                </div>
+              </div>
+
+              <!-- 15-second timer bar -->
+              <div class="timer-track">
+                <div id="timerBar" class="timer-bar"></div>
+              </div>
+
+              <!-- Question Box -->
+              <div class="question-container">
+                <span id="questionCategory" class="question-category">CATEGORY</span>
+                <p id="questionText" class="question-text">Loading question...</p>
+              </div>
+
+              <!-- 4 Answer Buttons -->
+              <div id="answersGrid" class="answers-grid">
+                <button type="button" class="arcade-answer-btn btn-cyan" data-index="0">
+                  <span class="key-badge">A</span>
+                  <span class="btn-text">Answer 1</span>
+                </button>
+                <button type="button" class="arcade-answer-btn btn-magenta" data-index="1">
+                  <span class="key-badge">B</span>
+                  <span class="btn-text">Answer 2</span>
+                </button>
+                <button type="button" class="arcade-answer-btn btn-amber" data-index="2">
+                  <span class="key-badge">C</span>
+                  <span class="btn-text">Answer 3</span>
+                </button>
+                <button type="button" class="arcade-answer-btn btn-lime" data-index="3">
+                  <span class="key-badge">D</span>
+                  <span class="btn-text">Answer 4</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- ================= SCREEN STATE: GAME OVER ================= -->
+            <div id="screenGameOver" class="screen-state">
+              <div class="gameover-box">
+                <div id="gameOverTitle" class="gameover-title">GAME OVER</div>
+                <div id="gameOverSub" class="gameover-sub">CREDIT 0 // TRY AGAIN</div>
+
+                <div class="results-table">
+                  <div class="res-row">
+                    <span>QUESTIONS CORRECT:</span>
+                    <span id="resCorrect" class="neon-number">0 / 10</span>
+                  </div>
+                  <div class="res-row">
+                    <span>FINAL SCORE:</span>
+                    <span id="resScore" class="neon-number">000000</span>
+                  </div>
+                  <div class="res-row">
+                    <span>ALL-TIME RECORD:</span>
+                    <span id="resHighScore" class="neon-number">000000</span>
+                  </div>
+                </div>
+
+                <div id="newRecordBadge" class="new-record-badge hidden">&#9733; NEW HIGH SCORE! &#9733;</div>
+
+                <button id="playAgainBtn" class="arcade-launch-btn" type="button">
+                  PLAY AGAIN
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Panel Deck -->
+      <div class="control-panel">
+        <div class="deck-surface">
+          <div class="joystick-assembly">
+            <div class="joystick-base"></div>
+            <div class="joystick-shaft"></div>
+            <div class="joystick-ball"></div>
+          </div>
+          <div class="cabinet-buttons">
+            <div class="cab-btn cab-red"></div>
+            <div class="cab-btn cab-blue"></div>
+            <div class="cab-btn cab-yellow"></div>
+            <div class="cab-btn cab-green"></div>
+          </div>
+          <div class="player-start-cluster">
+            <div class="p-btn">1P</div>
+            <div class="p-btn">2P</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lower Coin Door Assembly -->
+      <div class="coin-door">
+        <div class="coin-insert">
+          <div class="coin-slot">
+            <span class="slot-cut"></span>
+            <span class="slot-label">25&cent; INSERT COIN</span>
+          </div>
+          <div class="coin-slot">
+            <span class="slot-cut"></span>
+            <span class="slot-label">25&cent; INSERT COIN</span>
+          </div>
+        </div>
+        <div class="door-keyhole" aria-hidden="true">&#9670;</div>
+      </div>
+    </div>
+
+    <!-- REQUIRED CONCEPT TEXT & OPERATOR MANUAL -->
+    <section class="concept-section">
+      <div class="concept-card">
+        <div class="concept-header">
+          <span class="terminal-led"></span>
+          <span class="concept-tag">OPERATOR MANUAL // ARCHITECTURE</span>
+        </div>
+        <p class="concept-statement">
+          My /api page is a retro Quiz Arcade Machine. Questions come live from the Open Trivia Database and appear on the glowing screen of an arcade cabinet. You pick a category and difficulty, answer before the timer runs out, and you have three lives. It is unique because instead of showing trivia data as a list, it turns it into a playable arcade game with a score, lives and sound-style feedback.
+        </p>
+        <div class="concept-specs">
+          <div class="spec-pill"><span>API:</span> Open Trivia DB (opentdb.com)</div>
+          <div class="spec-pill"><span>CACHE:</span> 5-Min In-Memory Server Cache</div>
+          <div class="spec-pill"><span>ENGINE:</span> Python Flask + Web Audio API</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="arcade-footer">
+      <p>&copy; 2026 Heuser College CS CRP &bull; Yousuf Tahir &bull; Homework 9</p>
+    </footer>
+  </div>
+
+  <script src="/api/script.js"></script>
+</body>
+</html>
