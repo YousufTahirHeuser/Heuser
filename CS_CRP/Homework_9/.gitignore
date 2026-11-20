@@ -1,0 +1,26 @@
+# Environment variables & secrets
+.env
+.env.*
+*.env
+*.key
+*api_key*
+secrets.json
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# OS generated files
+.DS_Store
+Thumbs.db
