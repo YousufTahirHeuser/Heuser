@@ -54,6 +54,18 @@ def portfolio_static(filename):
     return send_from_directory(os.path.join(BASE_DIR, "portfolio"), filename)
 
 # -----------------------------------------------------------------------------
+# Embedded Routes (Homework 10)
+# -----------------------------------------------------------------------------
+@app.route("/embedded")
+@app.route("/embedded/")
+def embedded():
+    return send_from_directory(os.path.join(BASE_DIR, "embedded"), "index.html")
+
+@app.route("/embedded/<path:filename>")
+def embedded_static(filename):
+    return send_from_directory(os.path.join(BASE_DIR, "embedded"), filename)
+
+# -----------------------------------------------------------------------------
 # API Page & Endpoints (Open Trivia Database Quiz Machine)
 # -----------------------------------------------------------------------------
 @app.route("/api")
