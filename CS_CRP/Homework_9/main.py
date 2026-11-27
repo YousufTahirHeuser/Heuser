@@ -21,7 +21,7 @@ CATEGORIES_TTL = 3600       # 1 hour in seconds
 # -----------------------------------------------------------------------------
 # Home Routes
 # -----------------------------------------------------------------------------
-@app.route("/embedded")
+@app.route("/")
 def home():
     return send_from_directory(os.path.join(BASE_DIR, "home"), "index.html")
 
